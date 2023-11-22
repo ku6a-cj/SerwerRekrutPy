@@ -1,6 +1,30 @@
 from flask import Flask, request, jsonify
+#kod cezara przesuniecie 43 
 
 app = Flask(__name__)
+
+def encrypt_caesar(plaintext, shift):
+    encrypted_text = ""
+
+    for char in plaintext:
+        if char.isalpha():
+            # Determine if the character is uppercase or lowercase
+            is_upper = char.isupper()
+
+            # Shift the character
+            shifted_char = chr((ord(char) + shift - ord('A' if is_upper else 'a')) % 26 + ord('A' if is_upper else 'a'))
+
+            encrypted_text += shifted_char
+        else:
+            # If the character is not a letter, leave it unchanged
+            encrypted_text += char
+
+    return encrypted_text
+
+
+def decrypt_caesar(ciphertext, shift):
+    # To decrypt, use a negative shift
+    return encrypt_caesar(ciphertext, -shift)
 
 @app.route('/api/receive_values', methods=['POST'])
 def receive_values():
